@@ -64,9 +64,9 @@ pip install timm
 
 Please see the instructions on each task page.
 
-- [Semantic Segmentation](https://github.com/hamarh/HMNet_pth/blob/main/experiments/segmentation/README.md)
-- [Object Detection](https://github.com/hamarh/HMNet_pth/blob/main/experiments/detection/README.md)
-- [Monocular Depth Estimation](https://github.com/hamarh/HMNet/blob/main/experiments/depth/README.md)
+- [Semantic Segmentation](https://github.com/hamarh/HMNet_pth/blob/main/experiments/segmentation/)
+- [Object Detection](https://github.com/hamarh/HMNet_pth/blob/main/experiments/detection/)
+- [Monocular Depth Estimation](https://github.com/hamarh/HMNet/blob/main/experiments/depth/)
 
 # License
 
