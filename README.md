@@ -64,13 +64,13 @@ pip install timm
 
 Please see the instructions on each task page.
 
-- [Semantic Segmentation](https://github.com/hamarh/HMNet/blob/main/experiments/segmentation/README.md)
-- [Object Detection](https://github.com/hamarh/HMNet/blob/main/experiments/detection/README.md)
+- [Semantic Segmentation](https://github.com/hamarh/HMNet_pth/blob/main/experiments/segmentation/README.md)
+- [Object Detection](https://github.com/hamarh/HMNet_pth/blob/main/experiments/detection/README.md)
 - [Monocular Depth Estimation](https://github.com/hamarh/HMNet/blob/main/experiments/depth/README.md)
 
 # License
 
-The majority of this project is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) License. However, some code ([psee_evaluator.py](https://github.com/hamarh/HMNet_dev/blob/main/experiments/depth/scripts/psee_evaluator.py), [coco_eval.py](https://github.com/hamarh/HMNet_dev/blob/main/experiments/depth/scripts/coco_eval.py), [det_head_yolox.py](https://github.com/hamarh/HMNet_dev/blob/main/hmnet/models/base/head/task_head/det_head_yolox.py)) is available under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0) license.
+The majority of this project is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) License. However, some code ([psee_evaluator.py](https://github.com/hamarh/HMNet_pth/blob/main/experiments/depth/scripts/psee_evaluator.py), [coco_eval.py](https://github.com/hamarh/HMNet_pth/blob/main/experiments/depth/scripts/coco_eval.py), [det_head_yolox.py](https://github.com/hamarh/HMNet_pth/blob/main/hmnet/models/base/head/task_head/det_head_yolox.py)) is available under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0) license.
 
 # Acknowledgments
 

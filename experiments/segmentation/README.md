@@ -25,7 +25,7 @@ bash ./scripts/prepair.sh
 Download and unzip metadata.
 
 ```bash
-wget https://github.com/hamarh/HMNet/releases/download/v1.0.0/dsec_meta.tar
+wget https://github.com/hamarh/HMNet_pth/releases/download/v1.0.0/dsec_meta.tar
 tar -xvf dsec_meta.tar
 ```
 
@@ -33,28 +33,6 @@ If you want to generate metadata from scratch, run the following command:
 
 ```bash
 bash ./scripts/prepair.sh -a
-```
-
-# Reproduce our results
-
-To reproduce the results of HMNet-B3:
-
-(1) Download pretrained weights.
-
-```bash
-wget https://github.com/hamarh/HMNet/releases/download/v1.0.0/dsec_hmnet_B3.pth
-```
-
-(2) Run inference with the following commands.
-
-```bash
-python ./scripts/test.py ./config/hmnet_B3.py ./data/dsec/list/test/ ./data/dsec/ --speed_test --fast --pretrained ./pretrained/dsec_hmnet_B3.pth
-```
-
-(3) Evaluate the results.
-
-```bash
-sh ./scripts/run_eval.sh ./config/hmnet_B3.py
 ```
 
 # Training & Inference
@@ -84,6 +62,12 @@ python ./scripts/train.py ./config/hmnet_B3.py --amp --distributed --master ${ma
 python ./scripts/test.py ./config/hmnet_B3.py ./data/dsec/list/test/ ./data/dsec/ --fast --speed_test
 ```
 
+# Evaluation
+
+```bash
+sh ./scripts/run_eval.sh ./config/hmnet_B3.py
+```
+
 # Training Details
 
 |  | GPU | Training Time [hr] | Loss | Weights | Log |
@@ -92,4 +76,3 @@ python ./scripts/test.py ./config/hmnet_B3.py ./data/dsec/list/test/ ./data/dsec
 | hmnet_L1 | A100 (40GB) x 16 | 42.5 | 0.1881 | github | github |
 | hmnet_B3 | A100 (40GB) x 16 | 46.0 | 0.1685 | github | github |
 | hmnet_L3 | A100 (40GB) x 16 | 63.1 | 0.1410 | github | github |
-

@@ -36,7 +36,7 @@ bash ./scripts/prepair.sh
 Download and unzip metadata.
 
 ```bash
-wget https://github.com/hamarh/HMNet/releases/download/v1.0.0/gen1_meta.tar
+wget https://github.com/hamarh/HMNet_pth/releases/download/v1.0.0/gen1_meta.tar
 tar -xvf gen1_meta.tar
 ```
 
@@ -44,28 +44,6 @@ If you want to generate metadata from scratch, run the following command:
 
 ```bash
 bash ./scripts/prepair.sh -a
-```
-
-# Reproduce our results
-
-To reproduce the results of HMNet-B3:
-
-(1) Download pretrained weights.
-
-```bash
-wget https://github.com/hamarh/HMNet/releases/download/v1.0.0/gen1_hmnet_B3_tbptt.pth
-```
-
-(2) Run inference with the following commands.
-
-```bash
-python ./scripts/test.py ./config/hmnet_B3_yolox_tbptt.py ./data/gen1/list/test/ ./data/gen1/ --pretrained ./pretrained/gen1_hmnet_B3_tbptt.pth --fast --speed_test
-```
-
-(3) Evaluate the results.
-
-```bash
-sh ./scripts/run_eval.sh ./config/hmnet_B3_yolox_tbptt.py
 ```
 
 # Training & Inference
@@ -99,6 +77,12 @@ python ./scripts/train.py ./config/hmnet_B3_yolox_tbptt.py --amp --distributed
 
 ```bash
 python ./scripts/test.py ./config/hmnet_B3_yolox_tbptt.py ./data/gen1/list/test/ ./data/gen1/ --fast --speed_test
+```
+
+# Evaluation
+
+```bash
+sh ./scripts/run_eval.sh ./config/hmnet_B3_yolox_tbptt.py
 ```
 
 # Training Details
