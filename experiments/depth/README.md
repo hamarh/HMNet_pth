@@ -121,20 +121,20 @@ Pre-training on Eventscape
 
 |  | GPU | Training Time [hr] | Loss | Weights | Log |
 | --- | --- | --- | --- | --- | --- |
-| hmnet_B1 | A100 (40GB) x 8 | 11.3 | 0.0317 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/eventscape_hmnet_B1.csv |
-| hmnet_L1 | A100 (40GB) x 8 | 20.2 | 0.0293 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/eventscape_hmnet_L1.csv |
-| hmnet_B3 | A100 (40GB) x 8 | 20.6 | 0.0304 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/eventscape_hmnet_B3.csv |
-| hmnet_L3 | A100 (40GB) x 8 | 30.1 | 0.0294 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/eventscape_hmnet_L3.csv |
-| hmnet_B3_fuse_rgb | A100 (40GB) x 8 | 25.9 | 0.0277 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/eventscape_hmnet_B3_fuse_rgb.csv |
-| hmnet_L3_fuse_rgb | A100 (40GB) x 8 | 30.2 | 0.0273 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/eventscape_hmnet_L3_fuse_rgb.csv |
+| hmnet_B1 | A100 (40GB) x 8 | 11.3 | 0.0317 | github | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/eventscape_hmnet_B1.csv) |
+| hmnet_L1 | A100 (40GB) x 8 | 20.2 | 0.0293 | github | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/eventscape_hmnet_L1.csv) |
+| hmnet_B3 | A100 (40GB) x 8 | 20.6 | 0.0304 | github | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/eventscape_hmnet_B3.csv) |
+| hmnet_L3 | A100 (40GB) x 8 | 30.1 | 0.0294 | github | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/eventscape_hmnet_L3.csv) |
+| hmnet_B3_fuse_rgb | A100 (40GB) x 8 | 25.9 | 0.0277 | github | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/eventscape_hmnet_B3_fuse_rgb.csv) |
+| hmnet_L3_fuse_rgb | A100 (40GB) x 8 | 30.2 | 0.0273 | github | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/eventscape_hmnet_L3_fuse_rgb.csv) |
 
 Fine-tuning on MVSEC
 
 |  | GPU | Training Time [hr] | Loss | Weights | Log |
 | --- | --- | --- | --- | --- | --- |
-| hmnet_B1 | A100 (40GB) x 8 | 1.8 | 0.0319 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/mvsec_hmnet_B1.csv |
-| hmnet_L1 | A100 (40GB) x 8 | 1.2 | 0.0296 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/mvsec_hmnet_L1.csv |
-| hmnet_B3 | A100 (40GB) x 8 | 1.7 | 0.0286 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/mvsec_hmnet_B3.csv |
-| hmnet_L3 | A100 (40GB) x 8 | 1.3 | 0.0279 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/mvsec_hmnet_L3.csv |
-| hmnet_B3_fuse_rgb | A100 (40GB) x 8 | 2.7 | 0.0270 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/mvsec_hmnet_B3_fuse_rgb.csv |
-| hmnet_L3_fuse_rgb | A100 (40GB) x 8 | 2.7 | 0.0264 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/mvsec_hmnet_L3_fuse_rgb.csv |
+| hmnet_B1 | A100 (40GB) x 8 | 1.8 | 0.0319 | github | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/mvsec_hmnet_B1.csv) |
+| hmnet_L1 | A100 (40GB) x 8 | 1.2 | 0.0296 | github | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/mvsec_hmnet_L1.csv) |
+| hmnet_B3 | A100 (40GB) x 8 | 1.7 | 0.0286 | github | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/mvsec_hmnet_B3.csv) |
+| hmnet_L3 | A100 (40GB) x 8 | 1.3 | 0.0279 | github | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/mvsec_hmnet_L3.csv) |
+| hmnet_B3_fuse_rgb | A100 (40GB) x 8 | 2.7 | 0.0270 | github | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/mvsec_hmnet_B3_fuse_rgb.csv) |
+| hmnet_L3_fuse_rgb | A100 (40GB) x 8 | 2.7 | 0.0264 | github | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/mvsec_hmnet_L3_fuse_rgb.csv) |
