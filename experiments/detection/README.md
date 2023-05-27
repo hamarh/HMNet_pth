@@ -36,7 +36,7 @@ bash ./scripts/prepair.sh
 Download and unzip metadata.
 
 ```bash
-wget https://github.com/hamarh/HMNet_pth/releases/download/v1.0.0/gen1_meta.tar
+wget https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/gen1_meta.tar
 tar -xvf gen1_meta.tar
 ```
 
@@ -89,11 +89,11 @@ sh ./scripts/run_eval.sh ./config/hmnet_B3_yolox_tbptt.py
 
 |  | GPU | Training Time [hr] | Loss | Weights | Log |
 | --- | --- | --- | --- | --- | --- |
-| hmnet_B1 | A100 (40GB) x 8 | 28.8 | 2.3797 | github | github |
-| hmnet_B1_tbptt | A100 (40GB) x 8 | 12.3 | 2.8653 | github | github |
-| hmnet_L1 | A100 (40GB) x 8 | 42.0 | 2.0687 | github | github |
-| hmnet_L1_tbptt | A100 (40GB) x 16 | 10.5 | 2.8095 | github | github |
-| hmnet_B3 | A100 (40GB) x 8 | 47.9 | 2.1555 | github | github |
-| hmnet_B3_tbptt | A100 (40GB) x 16 | 18.7 | 2.5021 | github | github |
-| hmnet_L3 | A100 (40GB) x 8 | 64.5 | 1.9462 | github | github |
-| hmnet_L3_tbptt | A100 (40GB) x 16 | 19.0 | 2.4505 | github | github |
+| hmnet_B1 | A100 (40GB) x 8 | 28.8 | 2.3797 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/gen1_hmnet_B1.csv |
+| hmnet_B1_tbptt | A100 (40GB) x 8 | 12.3 | 2.8653 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/gen1_hmnet_B1_tbptt.csv |
+| hmnet_L1 | A100 (40GB) x 8 | 42.0 | 2.0687 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/gen1_hmnet_L1.csv |
+| hmnet_L1_tbptt | A100 (40GB) x 16 | 10.5 | 2.8095 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/gen1_hmnet_L1_tbptt.csv |
+| hmnet_B3 | A100 (40GB) x 8 | 47.9 | 2.1555 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/gen1_hmnet_B3.csv |
+| hmnet_B3_tbptt | A100 (40GB) x 16 | 18.7 | 2.5021 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/gen1_hmnet_B3_tbptt.csv |
+| hmnet_L3 | A100 (40GB) x 8 | 64.5 | 1.9462 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/gen1_hmnet_L3.csv |
+| hmnet_L3_tbptt | A100 (40GB) x 16 | 19.0 | 2.4505 | github | https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/gen1_hmnet_L3_tbptt.csv |
