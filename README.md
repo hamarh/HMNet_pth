@@ -1,6 +1,6 @@
 # Hierarchical Neural Memory Network
 
-This repo is a PyTorch implementation of HMNet proposed in our paper: [Hierarchical Neural Network for Low Latency Event Processing](https://openaccess.thecvf.com/content/CVPR2023/papers/Hamaguchi_Hierarchical_Neural_Memory_Network_for_Low_Latency_Event_Processing_CVPR_2023_paper.pdf).
+This repo is a PyTorch implementation of HMNet proposed in our paper: [Hierarchical Neural Network for Low Latency Event Processing](https://hamarh.github.io/hmnet/).
 
 ## Results and models
 
