@@ -70,7 +70,7 @@ Please see the instructions on each task page.
 
 # License
 
-The majority of this project is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) License. However, some code ([psee_evaluator.py](https://github.com/hamarh/HMNet_pth/blob/main/experiments/detection/scripts/psee_evaluator.py), [coco_eval.py](https://github.com/hamarh/HMNet_pth/blob/main/experiments/detection/scripts/coco_eval.py), [det_head_yolox.py](https://github.com/hamarh/HMNet_pth/blob/main/hmnet/models/base/head/task_head/det_head_yolox.py)) is available under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0) license.
+The majority of this project is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) License. However, some code ([psee_evaluator.py](https://github.com/hamarh/HMNet_pth/blob/main/experiments/detection/scripts/psee_evaluator.py), [coco_eval.py](https://github.com/hamarh/HMNet_pth/blob/main/experiments/detection/scripts/coco_eval.py), [det_head_yolox.py](https://github.com/hamarh/HMNet_pth/blob/main/hmnet/models/base/head/task_head/det_head_yolox.py)) is available under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0) license.
 
 # Acknowledgments
 
