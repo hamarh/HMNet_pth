@@ -329,7 +329,7 @@ class FTSettings(object):
 
     # ======== other settings ========
     resume      = ''
-    load        = './workspace/hmnet_B3_ep30/checkpoint.pth.tar'
+    load        = './workspace/hmnet_L3/checkpoint.pth.tar'
     print_freq  = 10
     fpath_script= sys.argv[0]
 

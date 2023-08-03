@@ -469,6 +469,7 @@ def load_params_if_specified(model, rank, config):
     if fpath_load is not None and fpath_load != '':
         state_dict = torch.load(fpath_load, map_location=config.device)['state_dict']
         no_matching = load_state_dict_matched(model, state_dict)
+        print_log("=> loading checkpoint '{}'".format(fpath_load), rank, config)
         for key in no_matching:
             print_log('No matching key. Skip loading %s' % key, rank, config)
 

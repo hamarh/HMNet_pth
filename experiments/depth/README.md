@@ -88,7 +88,7 @@ python ./scripts/train.py ./config/hmnet_B3.py --amp --distributed --master ${ma
 ## Step2. Fine-tuning on MVSEC outdoor day2
 
 ```bash
-python ./scripts/train.py ./config/hmnet_B3.py --amp --distributed --finetune
+python ./scripts/train.py ./config/hmnet_B3.py --amp --distributed --finetune --overwrite
 ```
 
 ## Step3. Inference using the trained model
