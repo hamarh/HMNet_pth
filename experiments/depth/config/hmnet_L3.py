@@ -194,7 +194,7 @@ class TrainSettings(object):
         train_dataset = eventscape.EventPacketStream(
             fpath_evt_lst        = './data/eventscape/list/train/events.txt',
             fpath_image_lst      = './data/eventscape/list/train/images.txt',
-            fpath_depth_lst      = './data/eventscape/list/train/labels.txt',
+            fpath_label_lst      = './data/eventscape/list/train/labels.txt',
             base_path            = './data/eventscape',
             fpath_meta           = './data/eventscape/list/train/meta.pkl',
             fpath_video_duration = './data/eventscape/list/train/video_duration.csv',

@@ -63,6 +63,8 @@ class EventPacket(data.Dataset):
                  rgb_mean=RGB_MEAN, rgb_std=RGB_STD, skip_image_loading=False,
                  max_events_per_packet=-1, downsample_packet_length=None, ignore_index=255):
 
+        assert sampling in ('random', 'file', 'label', 'regular')
+
         self.base_path = base_path
         self.sampling = sampling
         self.ev_meta = pkl.load(open(fpath_meta, 'rb'))
@@ -102,6 +104,7 @@ class EventPacket(data.Dataset):
             self.list_fpath_evt   = sampling_schedule['fpath_evt']
             self.list_fpath_image = sampling_schedule['fpath_image']
             self.list_fpath_label = sampling_schedule['fpath_label']
+            self.total_seq = len(self.sampling_timings)
         elif sampling == 'label':
             self.sampling_timings = []
             for ifile, fpath_lbl in enumerate(self.list_fpath_label):
@@ -110,12 +113,20 @@ class EventPacket(data.Dataset):
                     ts = fp['data_ts'][...]
                 seg_indices = np.unique(ts // 1000).tolist()
                 self.sampling_timings += [ (ifile, seg_index) for seg_index in seg_indices ]
+            self.total_seq = len(self.sampling_timings)
         elif sampling == 'regular':
             self.sampling_timings = []
             sampling_stride = sampling_stride if sampling_stride > 0 else train_duration
             seg_stride = int(sampling_stride // 1000)
             for ifile, (start, end) in enumerate(self.segment_ranges):
                 self.sampling_timings += [ (ifile, seg_index) for seg_index in range(start,end,seg_stride) ]
+            self.total_seq = len(self.sampling_timings)
+        elif sampling == 'random':
+            self.total_seq = 0
+            sampling_stride = sampling_stride if sampling_stride > 0 else train_duration
+            seg_stride = int(sampling_stride // 1000)
+            for start, end in self.segment_ranges:
+                self.total_seq += int((end - start) // seg_stride)
 
         self._image_meta = {
             'width': WIDTH,
@@ -128,7 +139,7 @@ class EventPacket(data.Dataset):
         return self.base_path + '/' + filename
 
     def __len__(self):
-        return len(self.sampling_timings)
+        return self.total_seq
 
     def __getitem__(self, index):
         events, _, image, _, label, meta_data, image_path, label_path = self.getdata(index)

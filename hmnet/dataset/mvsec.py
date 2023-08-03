@@ -72,6 +72,8 @@ class EventPacket(torch.utils.data.Dataset):
                  event_transform=None, output_type=None, skip_image_loading=False,
                  max_events_per_packet=-1, downsample_packet_length=None):
 
+        assert sampling in ('random', 'file', 'label', 'regular')
+
         self.sampling = sampling
         self.ev_meta = np.load(fpath_meta)
         self.skip_ts = 0
@@ -106,14 +108,20 @@ class EventPacket(torch.utils.data.Dataset):
         if sampling == 'file':
             sampling_schedule = pkl.load(open(fpath_sampling, 'rb'))
             self.sampling_timings = sampling_schedule['timings']
+            self.total_seq = len(self.sampling_timings)
         elif sampling == 'label':
             seg_indices = np.unique((self.label_t // 1000).astype(int)).tolist()
             self.sampling_timings = [ seg_index for seg_index in seg_indices ]
-        else:
+            self.total_seq = len(self.sampling_timings)
+        elif sampling == 'regular':
             sampling_stride = sampling_stride if sampling_stride > 0 else train_duration
             seg_stride = int(sampling_stride // 1000)
             end = int((self.end_t - self.start_t) // 1000)
             self.sampling_timings = [ seg_index for seg_index in range(0, end, seg_stride) ]
+            self.total_seq = len(self.sampling_timings)
+        elif sampling == 'random':
+            sampling_stride = sampling_stride if sampling_stride > 0 else train_duration
+            self.total_seq = int((self.end_t - self.start_t) // sampling_stride)
 
         self._image_meta = {
             'width': WIDTH,
@@ -136,7 +144,7 @@ class EventPacket(torch.utils.data.Dataset):
         return self.base_path + '/' + filename
 
     def __len__(self):
-        return len(self.sampling_timings)
+        return self.total_seq
 
     def __getitem__(self, index):
         events, _, image, _, label, meta_data, image_indices, label_indices = self.getdata(index)

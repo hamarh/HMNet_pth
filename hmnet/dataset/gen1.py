@@ -66,6 +66,7 @@ class EventPacket(data.Dataset):
                  event_transform=None, output_type=None,
                  max_events_per_packet=-1, downsample_packet_length=None):
 
+        assert sampling in ('random', 'file', 'label', 'regular')
 
         self.base_path = base_path
         self.sampling = sampling
@@ -94,11 +95,13 @@ class EventPacket(data.Dataset):
             self.sampling_timings = sampling_schedule['timings']
             self.list_fpath_evt   = sampling_schedule['fpath_evt']
             self.list_fpath_lbl   = sampling_schedule['fpath_label']
+            self.total_seq = len(self.sampling_timings)
         elif sampling == 'label':
             self.sampling_timings = []
             for ifile, fname_lbl in enumerate(self.list_fpath_lbl):
                 seg_indices = np.unique(np.load(self._get_path(fname_lbl))['t'] // 1000).tolist()
                 self.sampling_timings += [ (ifile, seg_index) for seg_index in seg_indices ]
+            self.total_seq = len(self.sampling_timings)
         elif sampling == 'regular':
             self.sampling_timings = []
             sampling_stride = sampling_stride if sampling_stride > 0 else train_duration
@@ -106,6 +109,10 @@ class EventPacket(data.Dataset):
             seg_duration = int(self.video_duration // 1000)
             for ifile in range(len(self.list_fpath_evt)):
                 self.sampling_timings += [ (ifile, seg_index) for seg_index in range(0,seg_duration,seg_stride) ]
+            self.total_seq = len(self.sampling_timings)
+        elif sampling == 'random':
+            sampling_stride = sampling_stride if sampling_stride > 0 else train_duration
+            self.total_seq = len(self.list_fpath_evt) * int(self.video_duration // sampling_stride)
 
         self._image_meta = {
             'width': WIDTH,
@@ -120,7 +127,7 @@ class EventPacket(data.Dataset):
         return self.base_path + '/' + filename
 
     def __len__(self):
-        return len(self.sampling_timings)
+        return self.total_seq
 
     def __getitem__(self, index):
         event_dict, bbox_dict, meta_data = self.getdata(index)
