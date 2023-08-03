@@ -326,15 +326,6 @@ class Stage(BlockBase):
         else:
             return seq_x
 
-    @torch.jit.ignore
-    def flops(self):
-        flops = 0
-        for blk in self.blocks:
-            flops += blk.flops()
-        if self.downsample is not None:
-            flops += self.downsample.flops()
-        return flops
-
 class TransformerBlock(BlockBase):
     def __init__(self, dim: int, num_heads: int, window_size: Tuple[int,int] = (7,7),
                  cyclic_shift: bool = False, grouping: str = 'intra-window', drop_path=0,
@@ -502,20 +493,6 @@ class Attention(BlockBase):
         x = self.grouping.resolve(x)
 
         return x
-
-    @torch.jit.ignore
-    def flops(self, N):
-        # calculate flops for 1 window with token length of N
-        flops = 0
-        # qkv = self.qkv(x)
-        flops += N * self.dim * 3 * self.dim
-        # attn = (q @ k.transpose(-2, -1))
-        flops += self.num_heads * N * (self.dim // self.num_heads) * N
-        #  x = (attn @ v)
-        flops += self.num_heads * N * N * (self.dim // self.num_heads)
-        # x = self.proj(x)
-        flops += N * self.dim * self.dim
-        return flops
 
 class SparseAttentionBlock(BlockBase):
     def __init__(self, dim: int, num_heads: int, use_edge_weight: bool = False, drop_path=0., mlp_ratio=4, norm_layer: type = nn.LayerNorm, act_layer: type = nn.GELU) -> None:
@@ -917,14 +894,6 @@ class DynamicPosBias(BlockBase):
     def _to_log_scale(self, relative_coords: Tensor) -> Tensor:
         return relative_coords.sign() * (1 + relative_coords.abs()).log()
 
-    @torch.jit.ignore
-    def flops(self, N):
-        flops = N * 2 * self.pos_dim
-        flops += N * self.pos_dim * self.pos_dim
-        flops += N * self.pos_dim * self.pos_dim
-        flops += N * self.pos_dim * self.num_heads
-        return flops
-
 class QKVTransform(BlockBase):
     def __init__(self, dim: int, num_heads: int, qkv_bias: bool = True, cross: bool = False, kv_dim: Optional[int] = None) -> None:
         super().__init__()
@@ -989,13 +958,6 @@ class PatchMergingSwin(BlockBase):
 
         return SeqData(x, x_meta)
 
-    @torch.jit.ignore
-    def flops(self, input_resolution):
-        H, W = input_resolution
-        flops = H * W * self.dim
-        flops += (H // 2) * (W // 2) * 4 * self.dim * 2 * self.dim
-        return flops
-
 class PatchMergingCross(BlockBase):
     def __init__(self, dim: int, stride: int, norm_layer: type = nn.LayerNorm, patch_size: List[int] = [2], out_dim: Optional[int] = None) -> None:
         super().__init__()
@@ -1020,18 +982,6 @@ class PatchMergingCross(BlockBase):
         xs = [ reduction(x) for reduction in self.reductions ]
         x = torch.cat(xs, dim=1)
         return SeqData.from_2D(x)
-
-    @torch.jit.ignore
-    def flops(self, input_resolution):
-        H, W = input_resolution
-        flops = H * W * self.dim
-        for i, ps in enumerate(self.patch_size):
-            if i == len(self.patch_size) - 1:
-                _outc = self.out_dim // 2 ** i
-            else:
-                _outc = self.out_dim // 2 ** (i + 1)
-            flops += (H // 2) * (W // 2) * ps * ps * _outc * self.dim
-        return flops
 
 def padding_same(data, kernel_size, stride):
     pad = max(0, kernel_size - stride)
@@ -1110,20 +1060,6 @@ class PatchEmbed(BlockBase):
         x = self.pos_drop(x)
         x_meta = {'shape': (B, H, W)}
         return SeqData(x, x_meta)
-
-    @torch.jit.ignore
-    def flops(self, patches_resolution):
-        Ho, Wo = patches_resolution
-        flops = 0
-        for i, ps in enumerate(self.patch_size):
-            if i == len(self.patch_size) - 1:
-                dim = self.embed_dim // 2 ** i
-            else:
-                dim = self.embed_dim // 2 ** (i + 1)
-            flops += Ho * Wo * dim * self.inc * (self.patch_size[i] * self.patch_size[i])
-        if self.norm is not None:
-            flops += Ho * Wo * self.embed_dim
-        return flops
 
 class Mlp(BlockBase):
     def __init__(self, in_features: int, hidden_features: Optional[int] = None, out_features: Optional[int] = None, act_layer: type = nn.GELU, drop: float = 0.):
