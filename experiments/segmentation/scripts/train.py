@@ -66,6 +66,7 @@ import torch.multiprocessing as mp
 
 from hmnet.models.base.init import load_state_dict_matched
 from hmnet.utils.common import makedirs, fix_seed, split_list, MovingAverageMeter
+from hmnet.utils import common as utils
 from hmnet.dataset.custom_loader import PseudoEpochLoader
 
 torch.backends.cudnn.benchmark = True
@@ -100,6 +101,10 @@ def main(local_rank, args, dist_settings=None):
     if config.distributed:
         model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
     model = model.to(config.device)
+
+    # reset seed for debug
+    #if config.seed is not None:
+    #    fix_seed(config.seed)
 
     # set optimizer
     optimizer, scheduler, scaler = set_optimizer(model, config)
@@ -169,13 +174,16 @@ def train(epoch, loader, model, optimizer, scheduler, scaler, rank, config):
         list_events, list_images, list_image_metas, list_labels = parse_event_data(data)
         meter.record_data_time()
 
-        segment_duration = adapt_segment_durations(list_events, list_image_metas, config.segment_duration, getattr(config, 'max_count_per_segment', 15000*162))
+        if hasattr(config, 'segment_duration'):
+            segment_duration = adapt_segment_durations(list_events, list_image_metas, config.segment_duration, getattr(config, 'max_count_per_segment', 15000*162))
 
-        seg_events, seg_images, seg_image_metas, seg_labels = \
-                split_into_segments(list_events, list_images, list_image_metas, list_labels, segment_duration=segment_duration, num_train_segments=config.num_train_segments)
+            seg_events, seg_images, seg_image_metas, seg_labels = \
+                    split_into_segments(list_events, list_images, list_image_metas, list_labels, segment_duration=segment_duration, num_train_segments=config.num_train_segments)
+        else:
+            seg_events, seg_images, seg_image_metas, seg_labels = \
+                [list_events], [list_images], [list_image_metas], [list_labels]
 
         for seg_idx, (events, images, image_metas, labels) in enumerate(zip(seg_events, seg_images, seg_image_metas, seg_labels)):
-            torch.cuda.empty_cache()
 
             events = to_device(events, config.device)
             images = to_device(images, config.device)
@@ -211,7 +219,7 @@ def train(epoch, loader, model, optimizer, scheduler, scaler, rank, config):
 
         # report
         if batch_idx % config.print_freq == 0:
-            meter.batch_report_train(epoch, loader.nowiter, config.maxiter, optimizer, config, segment_duration)
+            meter.batch_report_train(epoch, loader.nowiter, config.maxiter, optimizer, config)
 
         meter.timer_start()
 
@@ -306,7 +314,7 @@ class Meter:
                     self.loss_reports[key] = MovingAverageMeter()
                 self.loss_reports[key].update(value)
 
-    def batch_report_train(self, epoch, nowiter, maxiter, optimizer, config, segment_duration):
+    def batch_report_train(self, epoch, nowiter, maxiter, optimizer, config):
         if self.rank == 0:
             header = 'Epoch,Iter,Loss'
             csv = '%d,%d,%f' % (epoch+1, nowiter, self.loss_meter.mv_avg)
@@ -318,7 +326,6 @@ class Meter:
             logstr, header, csv = self._print_loss(logstr, header, csv, meter='val')
             logstr, header, csv = self._print_optim(logstr, header, csv, optimizer)
             logstr, header, csv = self._print_gpu_usage(logstr, header, csv)
-            logstr += f'\n    Segment duration: {segment_duration}'
             logstr += '\n'
             header += '\n'
             csv += '\n'
@@ -390,7 +397,7 @@ def init_ddp(local_rank, dist_settings, config):
     rank_offset, world_size, master = dist_settings
     rank = local_rank + rank_offset
 
-    if config.dist_comm_file is True:
+    if getattr(config, 'dist_comm_file', False) is True:
         dist.init_process_group(backend='nccl', init_method='file:///home/hama/tmp/%s.cmm' % config.name, rank=rank, world_size=world_size)
     else:
         os.environ['MASTER_ADDR'] = master
@@ -538,6 +545,7 @@ def get_config(args):
     config.overwrite = args.overwrite
     config.quiet = args.quiet
     config.start_epoch = 0
+    config.distributed = args.distributed
 
     if args.debug == True:
         config.maxiter = 4000
@@ -583,6 +591,7 @@ def get_ddp_settings(master, node):
     return master, rank_offset, world_size, local_size
     
 def parse_event_data(data):
+
     def _nested_shape(lst, shape=[]):
         if isinstance(lst, (list, tuple)):
             shape += [len(lst)]
@@ -618,7 +627,7 @@ if __name__ == '__main__':
     args.name = args.config.split('/')[-1].replace('.py', '')
 
     if args.distributed:
-        master, rank_offset, world_size, local_size = get_ddp_settings(args.dist_hostlist)
+        master, rank_offset, world_size, local_size = get_ddp_settings(args.master, args.node)
         dist_settings = [rank_offset, world_size, master]
         main_ddp(args, dist_settings, nprocs=local_size)
     else:

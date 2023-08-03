@@ -150,5 +150,8 @@ class HMNet1(BlockBase):
     def termination(self):
         self.memory1.termination()
 
+    def get_dummy_output(self):
+        z1_out = self.memory1.out_buffer[:1]
+        return z1_out,
 
 

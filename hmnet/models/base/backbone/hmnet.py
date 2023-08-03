@@ -189,5 +189,11 @@ class HMNet(BlockBase):
         self.memory2.termination()
         self.memory3.termination()
 
+    def get_dummy_output(self):
+        z1_out = self.memory1.out_buffer[:1]
+        z2_out = self.memory2.out_buffer[:1]
+        z3_out = self.memory3.out_buffer[:1]
+        return z1_out, z2_out, z3_out
+
 
 

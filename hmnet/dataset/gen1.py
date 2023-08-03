@@ -97,7 +97,7 @@ class EventPacket(data.Dataset):
         elif sampling == 'label':
             self.sampling_timings = []
             for ifile, fname_lbl in enumerate(self.list_fpath_lbl):
-                seg_indices = np.unique(np.load(self._get_path(fname_lbl))['ts'] // 1000).tolist()
+                seg_indices = np.unique(np.load(self._get_path(fname_lbl))['t'] // 1000).tolist()
                 self.sampling_timings += [ (ifile, seg_index) for seg_index in seg_indices ]
         elif sampling == 'regular':
             self.sampling_timings = []

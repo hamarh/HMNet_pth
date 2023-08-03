@@ -104,10 +104,10 @@ class HMDet(BlockBase):
         out_ignore_masks = self._gather(list_ignore_masks, gather_indices)
 
         # Backbone
-        z1_out, z2_out, z3_out = self.backbone(list_events, list_image_metas, gather_indices, init_states=init_states, detach=True, fast_training=True)
+        features = self.backbone(list_events, list_image_metas, gather_indices, init_states=init_states, detach=True, fast_training=True)
 
         # Head
-        loss, log_vars = self._forward_head(z1_out, z2_out, z3_out, out_gt_bboxes, out_gt_labels, out_ignore_masks)
+        loss, log_vars = self._forward_head(features, out_gt_bboxes, out_gt_labels, out_ignore_masks)
 
         # Make sure all parameters are involved in loss calculation
         loss = loss + sum([ 0. * params.sum() for params in self.parameters() ])
@@ -190,20 +190,18 @@ class HMDet(BlockBase):
 
         return out_bbox_dict, out_img_metas
 
-    def _forward_head(self, z1_out, z2_out, z3_out, out_gt_bboxes, out_gt_labels, out_ignore_masks):
-        if len(z1_out) == 0:
+    def _forward_head(self, features, out_gt_bboxes, out_gt_labels, out_ignore_masks):
+        if len(features[0]) == 0:
             # dummy loss calculation for DDP
             out_gt_bboxes = [ torch.empty(0,4) ]
             out_gt_labels = [ torch.empty(0,1) ]
             out_ignore_masks = [ torch.empty(0,1) ]
-            z1_out = self.backbone.memory1.out_buffer[:1]
-            z2_out = self.backbone.memory2.out_buffer[:1]
-            z3_out = self.backbone.memory3.out_buffer[:1]
+            features = self.backbone.get_dummy_output()
             coef = 0
         else:
             coef = 1
 
-        x = self.neck([z1_out, z2_out, z3_out])
+        x = self.neck(features)
         outputs = self.bbox_head(x)
         loss, log_vars = self.bbox_head.loss(outputs, out_gt_bboxes, out_gt_labels, out_ignore_masks)
 
