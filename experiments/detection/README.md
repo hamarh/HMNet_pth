@@ -46,6 +46,29 @@ If you want to generate metadata from scratch, run the following command:
 bash ./scripts/prepair.sh -a
 ```
 
+# Reproduce our results
+
+To reproduce the results of HMNet-B3:
+
+(1) Download pretrained weights.
+
+```bash
+wget https://github.com/hamarh/HMNet_pth/releases/download/v0.2.0/gen1_hmnet_B3_tbptt.pth
+```
+Put the weights in `./pretrained/`
+
+(2) Run inference with the following commands.
+
+```bash
+python ./scripts/test.py ./config/hmnet_B3_yolox_tbptt.py ./data/gen1/list/test/ ./data/gen1/ --pretrained ./pretrained/gen1_hmnet_B3_tbptt.pth --fast --speed_test
+```
+
+(3) Evaluate the results.
+
+```bash
+sh ./scripts/run_eval.sh ./config/hmnet_B3_yolox_tbptt.py
+```
+
 # Training & Inference
 
 ## Step1. Training with short sequences

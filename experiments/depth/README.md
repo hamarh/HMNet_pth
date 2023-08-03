@@ -64,6 +64,32 @@ cd ./data/mvsec/
 bash ./scripts/prepair.sh
 ```
 
+# Reproduce our results
+
+To reproduce the results of HMNet-B3:
+
+(1) Download pretrained weights.
+
+```bash
+wget https://github.com/hamarh/HMNet_pth/releases/download/v0.2.0/mvsec_hmnet_B3.pth
+```
+Put the weights in `./pretrained/`
+
+(2) Run inference with the following commands.
+
+```bash
+# inference on outdoor day1
+python ./scripts/test_mvsec.py ./config/hmnet_B3.py day1 --fast --speed_test --pretrained ./pretrained/hmnet_B3_mvsec.pth
+# inference on outdoor night1
+python ./scripts/test_mvsec.py ./config/hmnet_B3.py night1 --fast --speed_test --pretrained ./pretrained/hmnet_B3_mvsec.pth
+```
+
+(3) Evaluate the results.
+
+```bash
+sh ./scripts/run_eval_mvsec.sh ./config/hmnet_B3.py
+```
+
 # Training & Inference
 
 ## Step1. Pre-training on Eventscape
