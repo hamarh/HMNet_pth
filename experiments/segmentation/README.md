@@ -93,6 +93,8 @@ sh ./scripts/run_eval.sh ./config/hmnet_B3.py
 
 # Training Details
 
+The pre-trained weights are released under the Creative Commons BY-SA 4.0 License.
+
 |  | GPU | Training Time [hr] | Loss | Weights | Log |
 | --- | --- | --- | --- | --- | --- |
 | hmnet_B1 | A100 (40GB) x 16 | 31.0 | 0.2817 | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.2.0/dsec_hmnet_B1.pth) | [github](https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/dsec_hmnet_B1.csv) |

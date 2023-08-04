@@ -143,6 +143,8 @@ sh ./scripts/run_eval_mvsec.sh ./config/hmnet_B3.py
 
 # Training Details
 
+The pre-trained weights are released under the Creative Commons BY-SA 4.0 License.
+
 Pre-training on Eventscape
 
 |  | GPU | Training Time [hr] | Loss | Weights | Log |
