@@ -36,8 +36,10 @@ bash ./scripts/prepair.sh
 Download and unzip metadata.
 
 ```bash
-wget https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/gen1_meta.tar
-tar -xvf gen1_meta.tar
+wget https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/gen1_train_meta.tar
+wget https://github.com/hamarh/HMNet_pth/releases/download/v0.1.0/gen1_valtest_meta.tar
+tar -xvf gen1_train_meta.tar
+tar -xvf gen1_valtest_meta.tar
 ```
 
 If you want to generate metadata from scratch, run the following command:
