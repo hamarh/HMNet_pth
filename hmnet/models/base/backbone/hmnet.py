@@ -176,14 +176,6 @@ class HMNet(BlockBase):
 
         return list_dst
 
-
-        idx_offset += len(list_keys)
-
-        states = (idx_offset, z1, z2, z3)
-        outputs = (out_z1, out_z2, out_z3)
-
-        return outputs, states
-
     def termination(self):
         self.memory1.termination()
         self.memory2.termination()
