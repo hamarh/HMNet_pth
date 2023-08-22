@@ -24,6 +24,7 @@ import numpy as np
 import os
 import argparse
 import pickle as pkl
+from numpy.lib import recfunctions as rfn
 
 from coco_eval import evaluate_detection
 from hmnet.utils.psee_toolbox.io.box_filtering import filter_boxes
@@ -51,6 +52,7 @@ def evaluate_folders(dt_folder, gt_lst, camera):
     print("There are {} GT bboxes and {} PRED bboxes".format(len(gt_file_paths), len(dt_file_paths)))
     result_boxes_list = [np.load(p) for p in dt_file_paths]
     gt_boxes_list = [np.load(p) for p in gt_file_paths]
+    gt_boxes_list = [ rfn.drop_fields(p, 'invalid') for p in gt_boxes_list ]
 
     result_boxes_list = [reformat_boxes(p) for p in result_boxes_list]
     gt_boxes_list = [reformat_boxes(p) for p in gt_boxes_list]
