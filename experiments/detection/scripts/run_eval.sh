@@ -40,5 +40,5 @@ NAME=${NAME%.py}
 dir=$(ls -d ./workspace/${NAME}/result/pred_test/)
 out=${dir}/logs
 mkdir -p ${out}
-python ./scripts/psee_evaluator.py ./data/gen1_hoge/test_lbl/ ${dir} --camera GEN1 > ${out}/result.txt
+python ./scripts/psee_evaluator.py ./data/gen1/test_lbl/ ${dir} --camera GEN1 > ${out}/result.txt
 cat ${out}/result.txt
