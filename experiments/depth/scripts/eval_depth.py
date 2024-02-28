@@ -39,6 +39,7 @@ if __name__ == '__main__':
     parser.add_argument('--cutoff_depth', type=float, nargs='+', default=[], help='')
     parser.add_argument('--clip_pred', action='store_true', help='')
     parser.add_argument('--nlog_pred', action='store_true', help='')
+    parser.add_argument('--nlog_gt', action='store_true', help='')
     parser.add_argument('--gt_root', type=str, default='', help='')
     parser.add_argument('--input_type', type=str, default='dir', choices=['dir', 'info', 'mvsec'], help='')
     parser.add_argument('--skip_ts', type=float, help='msec')
@@ -86,20 +87,20 @@ def eval_from_info(args):
 
     list_fpath_gt = [ args.gt_root + '/' + strip(fpath) for fpath in list_fpath_gt ]
 
-    eval_list(list_fpath_pred, list_fpath_gt, args.max_depth, args.min_depth, args.cutoff_depth, args.dpath_out, args.clip_pred, args.nlog_pred)
+    eval_list(list_fpath_pred, list_fpath_gt, args.max_depth, args.min_depth, args.cutoff_depth, args.dpath_out, args.clip_pred, args.nlog_pred, args.nlog_gt)
 
 def eval_dir(args):
     list_fpath_pred = get_list(args.dpath_pred, ext='npy')
     list_fpath_gt   = get_list(args.dpath_gt  , ext='npy')
     list_fpath_gt = [ args.gt_root + strip(fpath) for fpath in list_fpath_gt ]
-    eval_list(list_fpath_pred, list_fpath_gt, args.max_depth, args.min_depth, args.cutoff_depth, args.dpath_out, args.clip_pred, args.nlog_pred)
+    eval_list(list_fpath_pred, list_fpath_gt, args.max_depth, args.min_depth, args.cutoff_depth, args.dpath_out, args.clip_pred, args.nlog_pred, args.nlog_gt)
 
 def Ndepth_to_depth(ndepth, max_depth, min_depth):
     alpha = math.log(max_depth/ min_depth)
     depth = max_depth * np.exp(alpha * (ndepth - 1))
     return depth
 
-def eval_list(list_fpath_pred, list_fpath_gt, max_depth, min_depth, cutoff_depth, dpath_out, clip_pred, nlog_pred=False):
+def eval_list(list_fpath_pred, list_fpath_gt, max_depth, min_depth, cutoff_depth, dpath_out, clip_pred, nlog_pred=False, nlog_gt=False):
     assert len(list_fpath_pred) == len(list_fpath_gt)
 
     mkdir(dpath_out)
@@ -111,6 +112,8 @@ def eval_list(list_fpath_pred, list_fpath_gt, max_depth, min_depth, cutoff_depth
         if nlog_pred:
             pred = Ndepth_to_depth(pred, max_depth, min_depth)
         gt = np.load(fpath_gt).squeeze()
+        if nlog_gt:
+            gt = Ndepth_to_depth(gt, max_depth, min_depth)
         result = evaluate_one_sample(pred, gt, max_depth, min_depth, cutoff_depth, clip_pred)
         eval_results.append(fpath_pred, result)
         print(f'{i} / {len(list_fpath_gt)}')
