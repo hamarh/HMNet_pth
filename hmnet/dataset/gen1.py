@@ -308,7 +308,7 @@ class EventPacket(data.Dataset):
         return bbox_dict
 
     def _filter_early_bboxes(self, labels, base_time, skip_ts=0):
-        times_lbl = labels['t'].astype(np.int) - base_time
+        times_lbl = labels['t'].astype(int) - base_time
         mask = (times_lbl > skip_ts)
         labels = labels[mask]
         return labels
@@ -367,8 +367,8 @@ class EventPacket(data.Dataset):
         t_evt = t_evt - base_time
         t_lbl = t_lbl - base_time
         base_time = 0
-        events = np.stack([t_evt, x_evt, y_evt, p_evt], axis=-1).astype(np.int)
-        labels = np.stack([t_lbl, x_lbl, y_lbl, w_lbl, h_lbl, c_lbl], axis=-1).astype(np.int)
+        events = np.stack([t_evt, x_evt, y_evt, p_evt], axis=-1).astype(int)
+        labels = np.stack([t_lbl, x_lbl, y_lbl, w_lbl, h_lbl, c_lbl], axis=-1).astype(int)
         labels = self._xywh2xyxy(labels)
         return events, labels
 
@@ -378,7 +378,7 @@ class EventPacket(data.Dataset):
         num_gt_frames = int(train_duration / gt_duration) + 1
 
         if len(labels) > 0:
-            times_lbl = labels[:,0].astype(np.int)
+            times_lbl = labels[:,0].astype(int)
             offset = int(times_lbl[0] % gt_duration - gt_duration * 0.5)
             alinged_times = times_lbl - offset
             frame_indices = (alinged_times / gt_duration).astype(int)
@@ -387,10 +387,10 @@ class EventPacket(data.Dataset):
             for lbl, fidx in zip(label_splits, frame_indices):
                 labels_dict[fidx] = lbl
 
-            times_for_dummy_gt_frames = ((np.arange(num_gt_frames) - frame_indices[0]) * gt_duration + times_lbl[0]).astype(np.int)
+            times_for_dummy_gt_frames = ((np.arange(num_gt_frames) - frame_indices[0]) * gt_duration + times_lbl[0]).astype(int)
             mask = np.logical_and(times_for_dummy_gt_frames >= 0, times_for_dummy_gt_frames < train_duration)
         else:
-            times_for_dummy_gt_frames = (np.arange(num_gt_frames) * gt_duration).astype(np.int)
+            times_for_dummy_gt_frames = (np.arange(num_gt_frames) * gt_duration).astype(int)
             mask = np.logical_and(times_for_dummy_gt_frames >= 0, times_for_dummy_gt_frames < train_duration)
 
         times_for_dummy_gt_frames = times_for_dummy_gt_frames[mask]
@@ -400,12 +400,12 @@ class EventPacket(data.Dataset):
         for i in range(num_gt_frames):
             if i in labels_dict:
                 time = labels_dict[i][0,0]
-                dummy_gt = np.array([[time , 0, 0, 1000, 1000, DUMMY_LABEL_IDX, False]], dtype=np.int)    # set dummy GT with for identifying gt timing
+                dummy_gt = np.array([[time , 0, 0, 1000, 1000, DUMMY_LABEL_IDX, False]], dtype=int)    # set dummy GT with for identifying gt timing
                 labels_padded.append(dummy_gt)
                 labels_padded.append(labels_dict[i])
             else:
                 time = times_for_dummy_gt_frames[i]
-                dummy_gt = np.array([[time , 0, 0, 1000, 1000, DUMMY_LABEL_IDX, False]], dtype=np.int)    # set dummy GT with for identifying gt timing
+                dummy_gt = np.array([[time , 0, 0, 1000, 1000, DUMMY_LABEL_IDX, False]], dtype=int)    # set dummy GT with for identifying gt timing
                 labels_padded.append(dummy_gt)
 
         labels_padded = np.concatenate(labels_padded, axis=0)
@@ -497,8 +497,8 @@ class EventPacketStream(EventPacket):
         num_frames     = int(math.ceil(train_duration / stride_t))
 
         # split data into sub-packets
-        times_evt = events[:,0].astype(np.int)
-        times_lbl = labels[:,0].astype(np.int)
+        times_evt = events[:,0].astype(int)
+        times_lbl = labels[:,0].astype(int)
         segment_indices_evt = times_evt // stride_t
         segment_indices_lbl = times_lbl // stride_t
 

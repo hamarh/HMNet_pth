@@ -29,7 +29,10 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from collections import OrderedDict
-from collections import MutableMapping
+try:
+    from collections import MutableMapping
+except:
+    from collections.abc import MutableMapping
 import logging
 import os
 import glob
